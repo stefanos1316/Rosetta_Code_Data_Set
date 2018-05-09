@@ -149,10 +149,20 @@ do
                         ;;
                         ("rust")
 				if [[ $tasksImplementation == *".rust" ]];
-				then 
-                                	eval=$(~/.cargo/bin/rustc -O -Awarnings ${DIRECTORY_PATH}/$containesTasks/$containesLanguages/$tasksImplementation)
-                          		getExecutableName=$(echo $tasksImplementation | awk -F "." '{print $1}') 
-					mv $getExecutableName ${DIRECTORY_PATH}/$containesTasks/$containesLanguages/    
+				then
+					# This is for cargo projects
+					if [ "$containesTasks" = "concurrent-computing" ]; then
+						cd ${DIRECTORY_PATH}/$containesTasks/$containesLanguages/$containesTasks/
+						cargo build --release
+						getExecutable=$(echo $tasksImplementation | awk -F "." '{print $1}')
+						cp target/release/${getExecutable} ../${getExecutable}_exec
+						cd ../../../../
+						ls
+					else
+                                		eval=$(~/.cargo/bin/rustc -O -Awarnings ${DIRECTORY_PATH}/$containesTasks/$containesLanguages/$tasksImplementation)
+						getExecutableName=$(echo $tasksImplementation | awk -F "." '{print $1}') 
+						mv $getExecutableName ${DIRECTORY_PATH}/$containesTasks/$containesLanguages/    
+					fi
 					if [ $? -eq 0 ];
                                 	then
                                                 echo "[Rust] $tasksImplementation successfully compiled"
