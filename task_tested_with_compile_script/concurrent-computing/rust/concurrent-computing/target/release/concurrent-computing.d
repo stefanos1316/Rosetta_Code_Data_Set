@@ -1,1 +1,0 @@
-/home/sgeorgiou/GitHub/Rosetta_Code_Data_Set/task_tested_with_compile_script/concurrent-computing/rust/concurrent-computing/target/release/concurrent-computing: /home/sgeorgiou/GitHub/Rosetta_Code_Data_Set/task_tested_with_compile_script/concurrent-computing/rust/concurrent-computing/src/main.rs
