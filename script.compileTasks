@@ -151,7 +151,7 @@ do
 				if [[ $tasksImplementation == *".rust" ]];
 				then
 					# This is for cargo projects
-					if [ "$containesTasks" = "concurrent-computing" ]; then
+					if [ "$containesTasks" = "concurrent-computing" -o "$containesTasks" = "json" ]; then
 						cd ${DIRECTORY_PATH}/$containesTasks/$containesLanguages/$containesTasks/
 						cargo build --release -q
 						getExecutable=$(echo $tasksImplementation | awk -F "." '{print $1}')
