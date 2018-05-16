@@ -134,17 +134,24 @@ do
                                 	fi
 				fi
                         ;;
-                        ("switf")
+                        ("swift")
 				if [[ $tasksImplementation == *".swift" ]];
 				then 
-                                	eval=$(swift -O ${DIRECTORY_PATH}/$containesTasks/$containesLanguages/$tasksImplementation)
-                                fi
+                                	eval=$(swiftc -suppress-warnings -O ${DIRECTORY_PATH}/$containesTasks/$containesLanguages/$tasksImplementation)
+				
+					# Now move the executable back to its directory
+					if [ "$containesTasks" = "json" ]; then
+						mv json ${DIRECTORY_PATH}/$containesTasks/$containesLanguages/
+					else
+						mv main ${DIRECTORY_PATH}/$containesTasks/$containesLanguages/	
+        				fi               
+			        fi
 
 				if [ $? -eq 0 ];
                                 then
                                                 echo "[Swift] $tasksImplementation successfully compiled"
                                         else
-                                                >&2 echo "${redlabel}[Swift] $tasksImplementation${defalult}"
+                                                >&2 echo "${redlabel}[Swift] $tasksImplementation${default}"
                                 fi
                         ;;
                         ("rust")

@@ -57,6 +57,7 @@ for i in 0...1000000 {
 let str = "this is an example for huffman encoding" + String(i)
 let charFreqs = getFreqs(seq: str.characters)
 let tree = buildTree(freqs: charFreqs)
+_ = tree
 //print("Symbol\tHuffman code")
 //tree.printCodes("")
 }

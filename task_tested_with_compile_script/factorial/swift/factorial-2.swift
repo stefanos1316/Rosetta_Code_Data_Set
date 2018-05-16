@@ -4,6 +4,6 @@ func factorial(_ num: Int) -> Int {
 }
 
 for i in 0...100000 {
-	let number = 10 +i
+	let number = 10 
 	factorial(number)
 }
