@@ -154,7 +154,7 @@ do
                                                 >&2 echo "${redlabel}[Swift] $tasksImplementation${default}"
                                 fi
                         ;;
-                        ("rust")
+                        ("rust_no")
 				if [[ $tasksImplementation == *".rust" ]];
 				then
 					# This is for cargo projects
