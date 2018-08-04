@@ -1,0 +1,77 @@
+---
+ - hosts: 127.0.0.1
+   connection: local
+   become: yes
+   vars:
+    c_sharp_print: 'Installed C# for Linux system (mono-devel)'
+ 
+   tasks:
+
+   - name: installing C and C++
+     action: dnf name=gcc-c++ state=installed
+  
+   - name: installing C sharp
+     action: dnf name=mono-core state=installed
+
+   - name: installing Visual Basic .NET 
+     action: dnf name=mono-basic state=installed
+
+   - name: installing Golang
+     action: dnf name=golang state=installed
+
+   - name: installing Java's jre
+     action: dnf name=java-1.8.0-openjdk state=installed
+  
+   - name: installing Java's jdk
+     action: dnf name=java-1.8.0-openjdk-devel state=installed
+ 
+   - name: installing JavaScript 
+     action: dnf name=nodejs state=installed
+
+   - name: installing JavaScript's node package manager
+     action: dnf name=npm state=installed
+
+   - name: installing Perl
+     action: dnf name=perl-core state=installed
+
+   - name: installing PHP
+     action: dnf name=php state=installed
+
+   - name: installing PHP commons
+     action: dnf name=php-common state=installed
+
+   - name: installing Python
+     action: dnf name=python state=installed
+   
+   - name: installing Python's pip package manager
+     action: dnf name='python-pip' state=installed
+
+   - name: installing R
+     action: dnf name=R state=installed
+  
+   - name: getting Rjson package and install it
+     command: wget http://cran.r-project.org/src/contrib/rjson_0.2.20.tar.gz
+
+   - name: installing R's rjson package 
+     command: R CMD INSTALL rjson_0.2.20.tar.gz 
+
+   - name: installing Ruby
+     action: dnf name=ruby-devel state=installed 
+
+   - name: installing Ruby zlib devel
+     action: dnf name=zlib-devel state=installed
+ 
+   - name: installing Ruby on Rails
+     command: gem install rails
+  
+   - name: installing Rust
+     action: dnf name=rust state=installed
+
+   - name: installing Rust's package manager
+     action: dnf name=cargo state=installed
+
+   - name: installing Swift
+     action: dnf name=swift-lang state=installed
+
+
+   
