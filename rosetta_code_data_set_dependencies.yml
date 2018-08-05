@@ -10,6 +10,34 @@
    - name: installing C and C++
      action: dnf name=gcc-c++ state=installed
   
+   - name: getting C's libco libarary
+     command: "{{ item }}" 
+     with_items:
+     - wget https://files.byuu.org/releases/libco_v18.tar.xz
+     - tar -xf libco_v18.tar.xz
+     - cp libco/libco.c /home/sgeorgiou/GitHub/Rosetta_Code_Data_Set/task_tested_with_compile_script/synchronous-concurrency/c
+     args:
+       warn: no   
+
+   - name: copying libco files to includes
+     copy:
+       src: "{{ item }}"
+       dest: "/usr/include/"
+       owner: "sgeorgiou"
+       mode: 0600
+     with_fileglob:
+     - "libco/*"
+
+   - name: cloning C's yajl
+     command: git clone git://github.com/lloyd/yajl
+
+   - name: installing C's yajl 
+     command: "{{ item }} chdir=yajl"
+     with_items:
+     - ./configure --prefix /usr/
+     - /usr/bin/make
+     - /usr/bin/make install
+
    - name: installing C sharp
      action: dnf name=mono-core state=installed
 
@@ -19,17 +47,21 @@
    - name: installing Golang
      action: dnf name=golang state=installed
 
-   - name: installing Java's jre
-     action: dnf name=java-1.8.0-openjdk state=installed
-  
-   - name: installing Java's jdk
-     action: dnf name=java-1.8.0-openjdk-devel state=installed
- 
-   - name: installing JavaScript 
-     action: dnf name=nodejs state=installed
+   - name: installing Java's JRE and JDK
+     command: "{{ item }}"
+     with_items:
+     - dnf install java-1.8.0-openjdk 
+     - dnf install java-1.8.0-openjdk-devel 
+     args:
+       warn: no
 
-   - name: installing JavaScript's node package manager
-     action: dnf name=npm state=installed
+   - name: installing JavaScript and NPM package manager
+     command: "{{ item }}"  
+     with_items:
+     - dnf install nodejs 
+     - dnf install npm
+     args:
+       warn: no
 
    - name: installing Perl
      action: dnf name=perl-core state=installed
@@ -39,57 +71,47 @@
      with_items:
      - dnf install php
      - dnf install php-common    
+     args:
+       warn: no
 
-   - name: installing Python
-     action: dnf name=python state=installed
-   
-   - name: installing Python's pip package manager
-     action: dnf name='python-pip' state=installed
+   - name: installing Python and PIP package manager
+     command: "{{ item }}" 
+     with_items:
+     - dnf install python 
+     - dnf install python-pip
+     args:
+       warn: no
 
    - name: installing R
      action: dnf name=R state=installed
   
-   - name: getting Rjson package and install it
+   - name: getting Rjson package and installing it
      command: "{{ item }}" 
      with_items:
      - wget http://cran.r-project.org/src/contrib/rjson_0.2.20.tar.gz
      - R CMD INSTALL rjson_0.2.20.tar.gz   
+     args:
+       warn: no
 
-   - name: installing Ruby
+   - name: installing Ruby on Rails
      command: "{{ item }}"
      with_items:
      - dnf install ruby-devel 
      - dnf install zlib-devel
      - gem install rails
-  
-   - name: installing Rust
-     action: dnf name=rust state=installed
+     args:
+       warn: no 
 
-   - name: installing Rust's package manager
-     action: dnf name=cargo state=installed
+   - name: installing Rust and cargo package manager
+     command: "{{ item }}" 
+     with_items:
+     - dnf install rust
+     - dnf install cargo
+     args:
+       warn: no
 
    - name: installing Swift
      action: dnf name=swift-lang state=installed
   
-   - name: getting C's libco libarary
-     command: "{{ item }}" 
-     with_items:
-     - wget https://files.byuu.org/releases/libco_v18.tar.xz
-     - tar -xf libco_v18.tar.xz
-   
-   - name: copying libco files to includes
-     copy:
-        src: "{{ item }}"
-        dest: /usr/include
-        with_fileglob:
-        - libco/*
-
-   - name: installing C's yajl 
-     command: "{{ item }} chdir=yajl"
-     with_items:
-     - ./configure --prefix /usr/
-     - /usr/bin/make
-     - /usr/bin/make install
-
    - name: installing Newtonsoft for C#'s json task
      action: dnf name=newtonsoft-json state=installed

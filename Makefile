@@ -6,6 +6,7 @@ clean:
 	-rm task_tested_with_compile_script/*/*/*.class
 	-rm -rf task_tested_with_compile_script/*/rust/*/target
 	find task_tested_with_compile_script/*/*/ -type f -executable -delete
+	-rm task_tested_with_compile_script/synchronous-concurrency/c/libco.c
 
 compilers:
 	echo Testing compilers...
