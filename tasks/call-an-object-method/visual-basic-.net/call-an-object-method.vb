@@ -23,7 +23,7 @@ Class Line
    Protected Overrides Sub Finalize()  ' destructor   
    End Sub
    Public Function someMethod(ByVal n As Integer, value As Integer) As Integer
-      variable = n + i
+      variable = n
    End Function
    
 End Class

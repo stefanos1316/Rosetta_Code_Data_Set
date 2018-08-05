@@ -1,9 +1,13 @@
 # Rosetta_Code_Data_Set
 A repository for data set paper purposes
 
-
 # Deploy 
-Execute make file
+In this repository, we use ansible yaml file for auto-deploy purposes. That means, you can execute the .yaml file to install all the programming languages---having tasks in this data-set---and their packages. To do that, install the ansible modules and then copy the .yaml (found in the parent director of this repository) in teh /etc/ansible directory. Then execute the following command.
+		$ sudo ansible-playbook rosetta_code_data_set_dependencies.yml
+
+This will install all the programming languages, their package manager utilities, and the necessary packages/modules to execute the Rosette Code data-set.
+
+Execute make file		
 		$ make
 
 # Tools 
