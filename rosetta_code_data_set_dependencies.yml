@@ -15,9 +15,9 @@
      with_items:
      - wget https://files.byuu.org/releases/libco_v18.tar.xz
      - tar -xf libco_v18.tar.xz
-     - cp libco/libco.c /home/sgeorgiou/GitHub/Rosetta_Code_Data_Set/task_tested_with_compile_script/synchronous-concurrency/c
+     - cp libco/libco.c /home/sgeorgiou/GitHub/Rosetta_Code_Data_Set/tasks/synchronous-concurrency/c
      args:
-       warn: no   
+       warn: no    
 
    - name: copying libco files to includes
      copy:
@@ -37,6 +37,15 @@
      - ./configure --prefix /usr/
      - /usr/bin/make
      - /usr/bin/make install
+
+   - name: cloning necessary json files for C++
+     command: "{{ item }}"
+     with_items:
+     - git clone https://github.com/nlohmann/json
+     - cp json/include/nlohmann/json.hpp /home/sgeorgiou/GitHub/Rosetta_Code_Data_Set/tasks/json/c++
+     - rm -rf json
+     args:
+       warn: no
 
    - name: installing C sharp
      action: dnf name=mono-core state=installed
@@ -66,11 +75,19 @@
    - name: installing Perl
      action: dnf name=perl-core state=installed
 
+   - name: installing Perl packages using CPAN
+     command: "{{ item }}"
+     with_items:
+     - cpan install MooseX::Declare
+     - cpan install JSON    
+
    - name: installing PHP
      command: "{{ item }}" 
      with_items:
      - dnf install php
-     - dnf install php-common    
+     - dnf install php-common
+     - dnf install php-json
+     - sed -i 's/memory_limit\ =\ 128M/memory_limit\ =\ 1024M/g' /etc/php.ini
      args:
        warn: no
 
@@ -79,6 +96,7 @@
      with_items:
      - dnf install python 
      - dnf install python-pip
+     - pip install numpy
      args:
        warn: no
 
@@ -99,6 +117,7 @@
      - dnf install ruby-devel 
      - dnf install zlib-devel
      - gem install rails
+     - gem install priority_queue
      args:
        warn: no 
 

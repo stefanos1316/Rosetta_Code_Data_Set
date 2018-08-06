@@ -2,11 +2,12 @@ all:
 	bash script.compileTasks --directory task_tested_with_compile_script/
 
 clean:
-	-rm task_tested_with_compile_script/*/*/*.exe
-	-rm task_tested_with_compile_script/*/*/*.class
-	-rm -rf task_tested_with_compile_script/*/rust/*/target
-	find task_tested_with_compile_script/*/*/ -type f -executable -delete
-	-rm task_tested_with_compile_script/synchronous-concurrency/c/libco.c
+	-rm tasks/*/*/*.exe
+	-rm tasks/*/*/*.class
+	-rm -rf tasks/*/rust/*/target
+	find tasks/*/*/ -type f -executable -delete
+	-rm tasks/synchronous-concurrency/c/libco.c
+	-rm tasks/json/c++/json.hpp
 
 compilers:
 	echo Testing compilers...

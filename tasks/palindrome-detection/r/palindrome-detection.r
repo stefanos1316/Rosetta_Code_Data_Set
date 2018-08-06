@@ -8,7 +8,7 @@ palindroi <- function(p) {
 
 executeTask <- function(i) {
 
-	palindroi("saippuakivikauppias" + i)
+	palindroi("saippuakivikauppias")
 	return(i)
 }
 
