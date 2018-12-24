@@ -1,5 +1,5 @@
 all:
-	bash script.compileTasks --directory task_tested_with_compile_script/
+	bash script.compileTasks --directory tasks/
 
 clean:
 	-rm tasks/*/*/*.exe
