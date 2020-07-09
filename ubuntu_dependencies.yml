@@ -1,0 +1,129 @@
+---
+ - hosts: 127.0.0.1
+   connection: local
+   become: yes
+ 
+   tasks:
+
+   - name: install gcc and  g++
+     apt: 
+       name:
+         ['gcc', 'g++']
+  
+   - name: install libco libarary
+     command: "{{ item }}" 
+     with_items:
+     - git clone https://github.com/byuu/higan.git
+     - cp higan/libco/libco.h /usr/include
+     - cp higan/libco/libco.c tasks/synchronous-concurrency/c
+     - cp higan/libco/amd64.c tasks/synchronous-concurrency/c
+     - cp higan/libco/settings.h tasks/synchronous-concurrency/c
+     - rm -rf higan
+     args:
+       warn: no
+
+   - name: clone yajl
+     command: git clone https://github.com/lloyd/yajl.git
+
+   - name: install yajl 
+     command: "{{ item }} chdir=yajl"
+     with_items:
+     - ./configure --prefix /usr/
+     - make
+     - make install
+
+   - name: remove yajl
+     command: rm -rf yajl
+
+   - name: install gcc and  g++
+     apt: 
+       name:
+         ['nlohmann-json-dev']
+
+   - name: installing C sharp
+     action: apt name=mono-core state=present
+
+   - name: installing Visual Basic .NET 
+     action: apt name=mono-basic state=present
+
+   - name: installing Golang
+     action: apt name=golang state=present
+
+   - name: installing Java's JRE and JDK
+     command: "{{ item }}"
+     with_items:
+     - apt install java-1.8.0-openjdk 
+     - apt install java-1.8.0-openjdk-devel 
+     args:
+       warn: no
+
+   - name: installing JavaScript and NPM package manager
+     command: "{{ item }}"  
+     with_items:
+     - apt install nodejs 
+     - apt install npm
+     args:
+       warn: no
+
+   - name: installing Perl
+     action: dnf name=perl-core state=installed
+
+   - name: installing Perl packages using CPAN
+     command: "{{ item }}"
+     with_items:
+     - cpan install MooseX::Declare
+     - cpan install JSON    
+
+   - name: installing PHP
+     command: "{{ item }}" 
+     with_items:
+     - apt install php
+     - apt install php-common
+     - apt install php-json
+     - sed -i 's/memory_limit\ =\ 128M/memory_limit\ =\ 1024M/g' /etc/php.ini
+     args:
+       warn: no
+
+   - name: installing Python and PIP package manager
+     command: "{{ item }}" 
+     with_items:
+     - apt install python 
+     - apt install python-pip
+     - pip install numpy
+     args:
+       warn: no
+
+   - name: installing R
+     action: apt name=R state=installed
+  
+   - name: getting Rjson package and installing it
+     command: "{{ item }}" 
+     with_items:
+     - wget http://cran.r-project.org/src/contrib/rjson_0.2.20.tar.gz
+     - R CMD INSTALL rjson_0.2.20.tar.gz   
+     args:
+       warn: no
+
+   - name: installing Ruby on Rails
+     command: "{{ item }}"
+     with_items:
+     - apt install ruby-devel 
+     - apt install zlib-devel
+     - gem install rails
+     - gem install priority_queue
+     args:
+       warn: no 
+
+   - name: installing Rust and cargo package manager
+     command: "{{ item }}" 
+     with_items:
+     - apt install rust
+     - apt install cargo
+     args:
+       warn: no
+
+   - name: installing Swift
+     action: apt name=swift-lang state=installed
+  
+   - name: installing Newtonsoft for C#'s json task
+     action: apt name=newtonsoft-json state=installed
