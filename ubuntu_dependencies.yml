@@ -8,7 +8,7 @@
    - name: install gcc and  g++
      apt: 
        name:
-         ['gcc', 'g++']
+         ['gcc', 'g++', 'clang', 'libcurl3', 'libpython2.7', 'libpython2.7-dev', 'cmake']
   
    - name: install libco libarary
      command: "{{ item }}" 
@@ -28,6 +28,7 @@
    - name: install yajl 
      command: "{{ item }} chdir=yajl"
      with_items:
+     - apt install -y cmake
      - ./configure --prefix /usr/
      - make
      - make install
@@ -40,90 +41,91 @@
        name:
          ['nlohmann-json-dev']
 
-   - name: installing C sharp
-     action: apt name=mono-core state=present
+   - name: install C sharp
+     action: apt name=mono-complete state=present
 
-   - name: installing Visual Basic .NET 
-     action: apt name=mono-basic state=present
+   - name: install Visual Basic .NET 
+     action: apt name=mono-vbnc state=present
 
-   - name: installing Golang
+   - name: install Golang
      action: apt name=golang state=present
 
-   - name: installing Java's JRE and JDK
+   - name: install Java and JavaScript
      command: "{{ item }}"
      with_items:
-     - apt install java-1.8.0-openjdk 
-     - apt install java-1.8.0-openjdk-devel 
+     - apt install openjdk-8-jdk
+     - apt install openjdk-8-jre
+     - apt install nodejs
      args:
        warn: no
 
-   - name: installing JavaScript and NPM package manager
-     command: "{{ item }}"  
-     with_items:
-     - apt install nodejs 
-     - apt install npm
-     args:
-       warn: no
+   - name: install Perl
+     action: apt name=perl state=present
 
-   - name: installing Perl
-     action: dnf name=perl-core state=installed
-
-   - name: installing Perl packages using CPAN
+   - name: install Perl packages using CPAN
      command: "{{ item }}"
      with_items:
      - cpan install MooseX::Declare
-     - cpan install JSON    
+     - cpan install JSON 
 
-   - name: installing PHP
+   - name: install PHP
      command: "{{ item }}" 
      with_items:
      - apt install php
      - apt install php-common
      - apt install php-json
-     - sed -i 's/memory_limit\ =\ 128M/memory_limit\ =\ 1024M/g' /etc/php.ini
+     - sed -i 's/memory_limit\ =\ 128M/memory_limit\ =\ 1024M/g' /etc/php/7.2/cli/php.ini
      args:
        warn: no
 
-   - name: installing Python and PIP package manager
+   - name: install Python and PIP package manager
      command: "{{ item }}" 
      with_items:
      - apt install python 
-     - apt install python-pip
-     - pip install numpy
+     - apt install python3-pip
+     - pip3 install numpy
      args:
        warn: no
 
-   - name: installing R
-     action: apt name=R state=installed
+   - name: install R
+     action: apt name=r-base state=present
   
-   - name: getting Rjson package and installing it
+   - name: install Rjson package
      command: "{{ item }}" 
      with_items:
      - wget http://cran.r-project.org/src/contrib/rjson_0.2.20.tar.gz
-     - R CMD INSTALL rjson_0.2.20.tar.gz   
+     - R CMD INSTALL rjson_0.2.20.tar.gz
+     - rm rjson_0.2.20.tar.gz
      args:
        warn: no
 
-   - name: installing Ruby on Rails
+   - name: install Ruby on Rails
      command: "{{ item }}"
      with_items:
-     - apt install ruby-devel 
-     - apt install zlib-devel
+     - apt install -y ruby-full
+     - apt install -y zlib1g
+     - apt install -y zlib1g-dev
      - gem install rails
      - gem install priority_queue
      args:
        warn: no 
 
-   - name: installing Rust and cargo package manager
-     command: "{{ item }}" 
-     with_items:
-     - apt install rust
-     - apt install cargo
-     args:
-       warn: no
+   - name: install rust
+     shell: curl https://sh.rustup.rs -sSf | sh -s -- -y
 
-   - name: installing Swift
-     action: apt name=swift-lang state=installed
+   - name: Adding cargo env to bashrc
+     shell: echo "export PATH=$PATH:/home/sgeorgiou/.cargo/bin" >> ~/.bashrc
+
+   - name: install swift
+     command: "{{ item }}"  
+     with_items:
+     - apt install -y binutils libc6-dev libcurl4 libedit2 libgcc-5-dev libpython2.7
+     - apt install -y libsqlite3-0 libstdc++-5-dev libxml2 pkg-config tzdata zlib1g-dev
+     - wget https://swift.org/builds/swift-5.0-release/ubuntu1804/swift-5.0-RELEASE/swift-5.0-RELEASE-ubuntu18.04.tar.gz
+     - tar xzf swift-5.0-RELEASE-ubuntu18.04.tar.gz
+     - mv swift-5.0-RELEASE-ubuntu18.04 /usr/share/swift
+     - echo "export PATH=/usr/share/swift/usr/bin:$PATH" >> ~/.bashrc
+     - rm swift-5.0-RELEASE-ubuntu18.04.tar.gz
   
-   - name: installing Newtonsoft for C#'s json task
-     action: apt name=newtonsoft-json state=installed
+   - name: install Newtonsoft json task
+     action: apt name=monodoc-newtonsoft-json-manual state=installed
